@@ -85,6 +85,25 @@ class RunShTests(unittest.TestCase):
         proc = self._run(self.tmp)
         self.assertEqual(proc.returncode, 0, proc.stdout + proc.stderr)
 
+    @unittest.skipUnless(shutil.which("node"), "node not installed")
+    def test_node_sample_pass(self):
+        with open(os.path.join(self.tmp, "sol.js"), "w") as f:
+            f.write(
+                "const fs=require('fs');const n=Number(fs.readFileSync(0,'utf8').trim());console.log(n*2);\n"
+            )
+        with open(os.path.join(self.tmp, "tests", "1.in"), "w") as f:
+            f.write("4\n")
+        with open(os.path.join(self.tmp, "tests", "1.out"), "w") as f:
+            f.write("8\n")
+
+        proc = self._run(self.tmp)
+        self.assertEqual(proc.returncode, 0, proc.stdout + proc.stderr)
+        self.assertIn("node", proc.stdout)
+        self.assertIn("passed", proc.stdout)
+
+        proc = self._run(os.path.join(self.tmp, "sol.js"))
+        self.assertEqual(proc.returncode, 0, proc.stdout + proc.stderr)
+
     def test_missing_source_fails(self):
         proc = self._run(self.tmp)
         self.assertNotEqual(proc.returncode, 0)

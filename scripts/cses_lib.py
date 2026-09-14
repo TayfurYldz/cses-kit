@@ -1126,7 +1126,7 @@ def submit_solution(
     print(f"submitting {sol}", flush=True)
     print(f"  user   {nick}", flush=True)
     print(f"  task   {task}  ({BASE}/problemset/task/{task})", flush=True)
-    print(f"  lang   {lang} / {option}", flush=True)
+    print(f"  lang   {lang}" + (f" / {option}" if option else ""), flush=True)
 
     form = [
         ("csrf_token", csrf),

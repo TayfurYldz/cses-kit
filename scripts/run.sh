@@ -28,7 +28,8 @@ if [[ -f "$ARG" ]]; then
 else
   PROB="$ARG"
   CPP_TEMPLATE=false
-  if [[ -f "$PROB/sol.cpp" ]] && grep -q 'your solution goes here' "$PROB/sol.cpp"; then
+  if [[ -f "$PROB/sol.cpp" ]] && [[ -f "$ROOT/template.cpp" ]] \
+      && cmp -s <(tr -d '[:space:]' < "$PROB/sol.cpp") <(tr -d '[:space:]' < "$ROOT/template.cpp"); then
     CPP_TEMPLATE=true
   fi
   if [[ -f "$PROB/sol.cpp" ]] && [[ "$CPP_TEMPLATE" == false ]]; then
